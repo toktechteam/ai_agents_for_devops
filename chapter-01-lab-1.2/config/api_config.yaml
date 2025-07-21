@@ -1,0 +1,15 @@
+service_name: "API-based Summarization"
+model: "gpt-3.5-turbo"
+max_tokens: 150
+temperature: 0.3
+timeout_seconds: 30
+retry_attempts: 3
+
+performance:
+  expected_latency_ms: 300
+  expected_memory_mb: 100
+  expected_startup_seconds: 3
+
+cost:
+  model: "variable"
+  estimated_per_request: 0.002
