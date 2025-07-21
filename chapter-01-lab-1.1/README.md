@@ -215,4 +215,4 @@ After completing this lab, consider:
 
 **🎓 Part of the comprehensive "AI Agents for DevOps" learning path**
 **📚 This is a FREE lab - upgrade to PAID for production-grade scenarios**
-** Reach out to us at help@theopskart.com/toktechteam@gmail.com or visit our website www.theopskart.com **
+**📚 Reach out to us at help@theopskart.com/toktechteam@gmail.com or visit our website www.theopskart.com**
