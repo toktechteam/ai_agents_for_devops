@@ -1,0 +1,36 @@
+Files Created:
+
+README.md - Complete lab guide with learning objectives and experiments
+docker-compose.yml - Single-command deployment with 4 services
+app_traditional.py - Rule-based sentiment API (fast startup, low memory)
+app_ml.py - ML model API (slow startup, high memory usage)
+setup.md - Manual setup instructions (no scripts - students do it themselves)
+
+📂 Folder Structure for GitHub:
+labs/chapter-01/lab-11-free/
+├── README.md                    # Main lab guide
+├── docker-compose.yml           # Deployment configuration
+├── app_traditional.py           # Traditional API implementation
+├── app_ml.py                   # ML API implementation
+├── setup.md                    # Manual setup instructions
+├── Dockerfile.traditional      # (Students create)
+├── Dockerfile.ml              # (Students create)
+├── nginx.conf                 # (Students create)
+├── requirements-traditional.txt # (Students create)
+└── requirements-ml.txt         # (Students create)
+🎯 Key Features:
+
+Hands-on Learning: Students create Docker files and configs manually
+Clear Comparisons: Traditional vs ML API operational differences
+Upgrade Hooks: Multiple "🚀 PAID version includes" callouts
+Real Performance Data: Actual startup times, memory usage, response times
+Career Value: Real-world insights about ML operations challenges
+
+💡 Upgrade Moments Built-in:
+
+Cold Start Problem: 30s startup vs instant
+Resource Inefficiency: 1.2GB RAM vs 50MB
+No Error Recovery: Basic error handling vs production-grade
+Manual Scaling: No auto-scaling vs intelligent scaling
+
+Students will experience firsthand why ML APIs require different operational patterns than traditional services!RetryClaude can make mistakes. Please double-check responses.Research Sonnet 4
