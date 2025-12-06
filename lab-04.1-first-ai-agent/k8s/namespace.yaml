@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ai-ml-lab-4-1
+  labels:
+    project: ai-agents-for-devops
+    lab: "4.1-free"

@@ -1,0 +1,37 @@
+name: lab-2.1-ci
+
+on:
+  push:
+    paths:
+      - "lab-02.1-inference-resources/**"
+  pull_request:
+    paths:
+      - "lab-02.1-inference-resources/**"
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: FREE - Install deps and run tests
+        working-directory: lab-02.1-inference-resources/free/app
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pytest
+
+      - name: Build FREE Docker image
+        working-directory: lab-02.1-inference-resources/free
+        run: |
+          docker build -t ai-lab-2-1-free:ci .

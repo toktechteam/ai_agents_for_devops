@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  autogen-free:
+    image: python:3.10-slim
+    container_name: autogen-free
+    working_dir: /app
+    volumes:
+      - ./src:/app/src
+      - ./requirements.txt:/app/requirements.txt
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    command: bash -c "pip install -r requirements.txt && python src/run.py"

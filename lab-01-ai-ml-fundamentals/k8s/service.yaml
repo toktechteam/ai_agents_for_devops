@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-lab-free
+  labels:
+    app: ai-lab-free
+spec:
+  type: ClusterIP
+  selector:
+    app: ai-lab-free
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+

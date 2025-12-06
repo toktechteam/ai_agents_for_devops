@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-lab-2-1-free
+  labels:
+    app: ai-lab-2-1-free
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-lab-2-1-free
+  template:
+    metadata:
+      labels:
+        app: ai-lab-2-1-free
+    spec:
+      containers:
+        - name: ai-lab-2-1-free
+          image: ai-lab-2-1-free:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10

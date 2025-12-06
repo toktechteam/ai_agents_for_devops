@@ -1,0 +1,35 @@
+name: lab-2.2-ci
+
+on:
+  push:
+    paths:
+      - "chapter-02.2-observability/**"
+  pull_request:
+    paths:
+      - "chapter-02.2-observability/**"
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run FREE tests
+        working-directory: lab-02.2-observability/free/app
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pytest
+
+      - name: Build FREE Docker image
+        working-directory: lab-02.2-observability/free
+        run: docker build -t ai-lab-2-2-free:ci .

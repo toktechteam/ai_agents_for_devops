@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-lab-2-2-free
+  labels:
+    app: ai-lab-2-2-free
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-lab-2-2-free
+  template:
+    metadata:
+      labels:
+        app: ai-lab-2-2-free
+    spec:
+      containers:
+        - name: ai-lab-2-2-free
+          image: ai-lab-2-2-free:v1
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi

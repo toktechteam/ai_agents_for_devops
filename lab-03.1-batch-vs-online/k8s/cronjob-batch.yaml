@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: batch-inference-cron
+  namespace: ai-ml-lab-3-1
+spec:
+  schedule: "*/2 * * * *" # every 2 minutes (for demo)
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        metadata:
+          labels:
+            app: batch-inference
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: batch-inference
+              image: ai-lab-3-1-batch:v1
+              imagePullPolicy: IfNotPresent
+              resources:
+                requests:
+                  cpu: "50m"
+                  memory: "64Mi"
+                limits:
+                  cpu: "200m"
+                  memory: "256Mi"

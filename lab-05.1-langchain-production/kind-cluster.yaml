@@ -1,0 +1,21 @@
+
+---
+
+## kind Cluster Config
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: mcp-cluster
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e
+    extraPortMappings:
+      - containerPort: 30000
+        hostPort: 30000
+        protocol: TCP
+        listenAddress: "0.0.0.0"
+      - containerPort: 30001
+        hostPort: 30001
+        protocol: TCP
+        listenAddress: "0.0.0.0"
+

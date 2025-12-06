@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: langchain-free
+  namespace: langchain-free
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: langchain-free
+  template:
+    metadata:
+      labels:
+        app: langchain-free
+    spec:
+      containers:
+        - name: langchain-free
+          image: langchain-free:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
