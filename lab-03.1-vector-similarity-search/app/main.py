@@ -66,7 +66,7 @@ def ingest() -> IngestResponse:
     store.ensure_collection(vector_size)
 
     points: List[rest.PointStruct] = []
-    for rb, v in zip(runbooks, vectors):
+    for idx, (rb, v) in enumerate(zip(runbooks, vectors), start=1):
         payload = {
             "title": rb["title"],
             "service": rb["service"],
@@ -75,9 +75,9 @@ def ingest() -> IngestResponse:
         }
         points.append(
             rest.PointStruct(
-                id=rb["id"],
+                id=idx,
                 vector=v,
-                payload=payload,
+                payload={**payload, "doc_id": rb["id"]},
             )
         )
 
