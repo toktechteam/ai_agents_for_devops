@@ -1,0 +1,37 @@
+[
+  {
+    "id": "rb-001",
+    "title": "Kubernetes Pods CrashLoopBackOff Troubleshooting",
+    "service": "platform",
+    "severity": "high",
+    "content": "If pods are CrashLoopBackOff: check logs, describe pod, verify env vars/secrets, check image pull, check liveness/readiness probes, and confirm resource limits."
+  },
+  {
+    "id": "rb-002",
+    "title": "High Latency in API Service",
+    "service": "api",
+    "severity": "medium",
+    "content": "Investigate high p95 latency: check APM traces, DB slow queries, upstream timeouts, CPU throttling, GC pauses, and network saturation."
+  },
+  {
+    "id": "rb-003",
+    "title": "Database Connection Pool Exhaustion",
+    "service": "db",
+    "severity": "high",
+    "content": "If connection pool is exhausted: validate max pool size, detect connection leaks, review query timeouts, scale DB, and add circuit breakers."
+  },
+  {
+    "id": "rb-004",
+    "title": "Node Disk Pressure in Kubernetes",
+    "service": "platform",
+    "severity": "high",
+    "content": "DiskPressure: check /var/lib/containerd, prune unused images, rotate logs, review ephemeral storage requests/limits, and increase node disk size."
+  },
+  {
+    "id": "rb-005",
+    "title": "TLS Certificate Expiry Monitoring",
+    "service": "security",
+    "severity": "low",
+    "content": "Track TLS expiry: set alerts for 30/14/7 days, validate renew automation, test cert chain, and ensure reload without downtime."
+  }
+]
