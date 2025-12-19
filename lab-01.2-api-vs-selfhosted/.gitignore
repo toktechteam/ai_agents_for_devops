@@ -1,0 +1,46 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS Finder metadata
+Icon?
+._*
+
+# macOS Trash
+.Trashes
+*.swp
+
+# JetBrains IDEs (WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+
+# VSCode settings
+.vscode/
+
+# Node.js dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# OS crash logs
+*.pid
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Compiled binary artifacts
+dist/
+build/
+

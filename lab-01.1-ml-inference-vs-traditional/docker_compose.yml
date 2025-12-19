@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # Traditional rule-based API - starts instantly
+  traditional-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.traditional
+    ports:
+      - "8001:8000"
+    environment:
+      - API_TYPE=traditional
+      - LOG_LEVEL=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+  # ML model API - takes 30s to start, uses 1.2GB RAM
+  ml-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    ports:
+      - "8002:8000"
+    environment:
+      - API_TYPE=ml
+      - MODEL_NAME=distilbert-base-uncased-finetuned-sst-2-english
+      - LOG_LEVEL=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 45s  # ML model needs time to load
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
+        reservations:
+          memory: 1G
+
+  # Simple load balancer to compare both
+  nginx-lb:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - traditional-api
+      - ml-api
+    restart: unless-stopped
+
+  # Basic monitoring - shows resource differences
+  portainer:
+    image: portainer/portainer-ce:latest
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    restart: unless-stopped
+
+volumes:
+  portainer_data:
