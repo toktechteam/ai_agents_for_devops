@@ -405,7 +405,7 @@ These build on the foundation you just established.
 
 This lab lives here:
 
-👉 [github.com/toktechteam/ai_agents_for_devops/tree/main/lab-02.1-inference-resource-reality](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-02.1-inference-resource-reality)
+👉 [github.com/toktechteam/ai_agents_for_devops/tree/main/lab-02.1-inference-resource](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-02.1-inference-resource)
 
 ---
 
