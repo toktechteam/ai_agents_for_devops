@@ -1,12 +1,14 @@
 import time
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, conlist
+from typing import List
 
-app = FastAPI(title="Lab 2.1 Free - Resource-Aware Inference API")
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+
+app = FastAPI(title="Lab 2.1 - Resource-Aware Inference API")
 
 
 class Features(BaseModel):
-    features: conlist(float, min_items=1)
+    features: List[float] = Field(..., min_length=1)
 
 
 CPU_BURN_MS = 30  # small CPU burn to simulate inference
@@ -22,7 +24,11 @@ def cpu_burn(milliseconds: int) -> None:
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "mode": "free", "cpu_burn_ms": CPU_BURN_MS}
+    return {
+        "status": "ok",
+        "mode": "free",
+        "cpu_burn_ms": CPU_BURN_MS,
+    }
 
 
 @app.post("/predict")
@@ -34,4 +40,8 @@ def predict(payload: Features):
 
     cpu_burn(CPU_BURN_MS)
 
-    return {"prediction": prediction, "cpu_burn_ms": CPU_BURN_MS}
+    return {
+        "prediction": prediction,
+        "cpu_burn_ms": CPU_BURN_MS,
+    }
+

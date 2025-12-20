@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ai-lab-2-1-free
-          image: ai-lab-2-1-free:v1
+          image: ai-lab-2-1:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
