@@ -1,135 +1,173 @@
-# FREE Version – Observability for AI Inference Lab
+# Lab 02.2 — Observability for AI Inference Services
 
-This is the **FREE version** of Lab 2.2, teaching DevOps engineers how to add basic observability to AI inference services running in Kubernetes.
+[![Lab](https://img.shields.io/badge/Lab-02.2-blue.svg)](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-02.2-observability)
+[![Chapter](https://img.shields.io/badge/Chapter-2-orange.svg)](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+[![Code License: MIT](https://img.shields.io/badge/Code%20License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-## What You'll Learn
-
-- Why AI inference systems need deeper observability than normal CRUD apps
-- How to emit basic logs using stdout
-- How to create custom lightweight metrics endpoints
-- How to build a simple Python load generator
-- How DevOps teams debug latency issues in ML inference
-- Fully offline observability (no external backend required)
+This lab is part of **Chapter 2** of the eBook **AI Agents for DevOps**.
 
 ---
 
-## Prerequisites
+## 🎯 Lab Objective
 
-**Operating System:**
-- Ubuntu 22.04 (or similar Linux / WSL2 / macOS)
+This lab focuses on introducing **observability** into an AI inference service running on Kubernetes.
 
-**Required Software:**
-- Docker 24+
-- kind (Kubernetes in Docker)
-- kubectl ≥ 1.29
-- Python 3.11+
-- Git
+You will deploy a simple inference API, expose logs and lightweight metrics, generate load, and observe runtime behavior from an infrastructure perspective.
 
-**Basic Familiarity With:**
-- Docker build/run commands
-- Kubernetes deployments and services
-- Basic metrics concepts (counters, gauges)
-- curl or similar HTTP clients
+> This lab builds directly on Chapter-2 concepts: **AI workloads behave differently than traditional applications and must be observed differently.**
 
 ---
 
-## Repository Structure
+## 📁 Repository Structure
 
 ```
-free/
-├── app/
-│   ├── main.py              # FastAPI app with metrics endpoint
-│   ├── requirements.txt     # Python dependencies
-│   └── tests/
-│       └── test_app.py      # Unit tests
-├── k8s/
-│   ├── deployment.yaml      # Kubernetes deployment
-│   └── service.yaml         # Kubernetes service
-├── load-generator/
-│   └── generate_load.py     # Simple load testing script
-└── Dockerfile               # Container image definition
+lab-02.2-observability
+├── Dockerfile
+├── LICENSE
+├── README.md
+├── app
+│   ├── load_generator.py
+│   ├── main.py
+│   ├── requirements.txt
+│   └── tests
+│       ├── test_app.py
+│       └── test_load_generator.py
+├── commands.md
+├── k8s
+│   ├── deployment.yaml
+│   └── service.yaml
+├── kind-mcp-cluster.yaml
+└── setup.md
 ```
 
 ---
 
-## Features
+## 🧠 What You Will Learn
 
-The FREE version includes:
+By completing this lab, you will understand:
 
-✅ **Basic Stdout Logging** - Simple logging to container stdout  
-✅ **Custom Metrics Endpoint** - Lightweight `/metrics-lite` endpoint  
-✅ **Request Tracking** - Count total requests and track latency  
-✅ **Simple Load Generator** - Python script to simulate traffic  
-✅ **Offline Operation** - No external dependencies or backends  
-✅ **Zero Cost** - Runs entirely in KIND cluster  
+1. **Why AI inference services need observability beyond basic uptime checks**
+2. **How to expose logs and metrics directly from an inference service**
+3. **How to observe inference behavior inside Kubernetes**
+4. **How to generate controlled load against an inference endpoint**
+5. **How DevOps engineers validate latency, stability, and behavior of AI workloads**
+6. **Why observability should start inside the application, not with external tools**
 
 ---
 
-## Quick Start Guide
+## 📋 Prerequisites
 
-### Step 1: Create kind Cluster
+### Operating System
 
-From the parent directory:
+- **Ubuntu 22.04** (EC2, local VM, WSL2, or similar)
+
+### Required Tools
+
+- **Docker**: 24+
+- **kind**: Latest version
+- **kubectl**: ≥ 1.29
+- **Python**: 3.11+
+- **Git**: Latest version
+
+> For installation instructions, see [setup.md](setup.md)
+
+---
+
+## 🏗️ Application Overview
+
+The FastAPI service exposes:
+
+| Endpoint | Purpose |
+|----------|---------|
+| `/health` | Liveness and startup verification |
+| `/predict` | Simulated inference endpoint |
+| `/metrics-lite` | Lightweight observability metrics |
+
+> The inference logic is intentionally simple to keep the focus on **observability and infrastructure behavior**, not ML complexity.
+
+---
+
+## 📁 Files You Should Care About
+
+| File/Directory | Purpose |
+|----------------|---------|
+| `Dockerfile` | Container definition for inference service |
+| `app/main.py` | FastAPI-based inference service with observability |
+| `app/load_generator.py` | Load testing script for inference |
+| `app/requirements.txt` | Python dependencies |
+| `app/tests/` | Unit tests for the service |
+| `k8s/deployment.yaml` | Kubernetes deployment configuration |
+| `k8s/service.yaml` | Kubernetes service configuration |
+| `kind-mcp-cluster.yaml` | Kind cluster configuration |
+| `commands.md` | Common kubectl/docker commands reference |
+| `setup.md` | Detailed setup and troubleshooting guide |
+| `README.md` | This file (single source of truth) |
+
+---
+
+## 🚀 Setup Instructions
+
+### Step 1: Create Kubernetes Cluster
 
 ```bash
 kind create cluster --config kind-mcp-cluster.yaml
-```
-
-Verify the cluster is running:
-
-```bash
 kubectl get nodes
 ```
 
-Expected output:
+**Expected output:**
+```
+NAME                        STATUS   ROLES           AGE   VERSION
+mcp-cluster-control-plane   Ready    control-plane   1m    v1.x.x
+```
 
-```
-NAME                      STATUS   ROLES           AGE   VERSION
-mcp-cluster-control-plane Ready    control-plane   30s   v1.30.0
-```
+---
 
 ### Step 2: Build Docker Image
 
-From the `free/` directory:
-
 ```bash
-docker build -t ai-lab-2-2-free:v1 .
+docker build -t ai-lab-2-2:v1 .
 ```
+
+---
 
 ### Step 3: Load Image into kind
 
 ```bash
-kind load docker-image ai-lab-2-2-free:v1 --name mcp-cluster
+kind load docker-image ai-lab-2-2:v1 --name mcp-cluster
 ```
+
+---
 
 ### Step 4: Deploy to Kubernetes
 
 ```bash
 kubectl apply -f k8s/
+kubectl get pods
+kubectl get svc ai-lab-2-2
 ```
 
-Check deployment status:
+**Ensure the pod is in `Running` state:**
 
 ```bash
-kubectl get pods
-kubectl get svc ai-lab-2-2-free
+kubectl wait --for=condition=ready pod -l app=ai-lab-2-2 --timeout=300s
 ```
-
-Expected:
-- Pod status: `Running`
-- Service: `ClusterIP` with a stable internal IP
 
 ---
 
-## Testing Observability Features
+## 🔍 Accessing the Service
 
-### Access the Application
-
-Port-forward the service to your local machine:
+### Port Forward
 
 ```bash
-kubectl port-forward deploy/ai-lab-2-2-free 8002:8000
+kubectl port-forward deploy/ai-lab-2-2 8002:8000
 ```
+
+> Leave this running in a separate terminal.
+
+---
+
+## ✅ Testing the Service
 
 ### Health Check
 
@@ -137,404 +175,338 @@ kubectl port-forward deploy/ai-lab-2-2-free 8002:8000
 curl http://localhost:8002/health
 ```
 
-Expected response:
-
+**Expected response:**
 ```json
-{"status": "ok"}
+{
+  "status": "ok",
+  "version": "v1"
+}
 ```
 
-### View Metrics
+---
 
-Access the lightweight metrics endpoint:
+### Metrics Endpoint
 
 ```bash
 curl http://localhost:8002/metrics-lite
 ```
 
-Expected response:
-
+**Example output:**
 ```json
 {
-  "total_requests": 1,
-  "total_predictions": 0,
-  "avg_latency_ms": 0,
-  "uptime_seconds": 123
+  "uptime_ms": 1766243858512,
+  "cpu_simulated_ms": 25,
+  "requests_total_estimate": 100
 }
 ```
 
-### Make Prediction Requests
+**What these metrics tell you:**
+- **uptime_ms**: How long the service has been running
+- **cpu_simulated_ms**: Simulated CPU cost per request
+- **requests_total_estimate**: Approximate request count
+
+---
+
+### Inference Request
 
 ```bash
 curl -X POST http://localhost:8002/predict \
   -H "Content-Type: application/json" \
-  -d '{"features": [1.0, 2.0, 3.5]}'
+  -d '{"features":[1.0,2.0,3.5]}'
 ```
 
-Expected response:
-
+**Response:**
 ```json
 {
-  "prediction": 6.5,
-  "model_latency_ms": 50
-}
-```
-
-### Check Updated Metrics
-
-```bash
-curl http://localhost:8002/metrics-lite
-```
-
-You should see updated counters:
-
-```json
-{
-  "total_requests": 5,
-  "total_predictions": 4,
-  "avg_latency_ms": 52,
-  "uptime_seconds": 245
+  "prediction": 6.5
 }
 ```
 
 ---
 
-## Viewing Logs
+## 📊 Viewing Logs
 
-### Stream Application Logs
+### Stream Logs in Real-Time
 
 ```bash
-kubectl logs -f deploy/ai-lab-2-2-free
+kubectl logs -f deploy/ai-lab-2-2
 ```
 
-You'll see logs like:
+**Example log output:**
+```
+INFO:lab-2.2:Health check called
+INFO:lab-2.2:Prediction requested with [1.0, 2.0, 3.5]
+INFO:lab-2.2:Prediction completed: 6.5
+```
 
-```
-INFO:     Started server process
-INFO:     Application startup complete
-INFO:     Prediction request received - latency: 48ms
-INFO:     Prediction request received - latency: 51ms
-```
+---
 
 ### Filter Logs
 
-Search for specific log entries:
-
 ```bash
-kubectl logs deploy/ai-lab-2-2-free | grep "Prediction"
+# See only prediction logs
+kubectl logs deploy/ai-lab-2-2 | grep "Prediction"
+
+# See only errors
+kubectl logs deploy/ai-lab-2-2 | grep "ERROR"
+
+# Get last 50 lines
+kubectl logs deploy/ai-lab-2-2 --tail=50
 ```
 
 ---
 
-## Load Testing
+## 🔥 Load Testing with load_generator.py
 
-### Using the Simple Load Generator
+The load generator simulates concurrent inference requests and helps you observe latency, logging behavior, and service stability.
 
-From the `free/load-generator/` directory:
+### Run Load Generator Locally
 
-```bash
-# Install dependencies
-pip install requests
-
-# Run load generator
-python generate_load.py --url http://localhost:8002 --requests 100
-```
-
-The load generator will:
-- Send 100 prediction requests
-- Print summary statistics
-- Show average latency
-
-Expected output:
-
-```
-Sending 100 requests to http://localhost:8002/predict...
-Progress: [####################] 100/100
-Complete!
-
-Summary:
-- Total requests: 100
-- Successful: 100
-- Failed: 0
-- Average latency: 52ms
-- Min latency: 45ms
-- Max latency: 68ms
-```
-
-### Check Metrics After Load Test
+**Ensure port-forward is running**, then:
 
 ```bash
-curl http://localhost:8002/metrics-lite
+python3 app/load_generator.py \
+  --url http://localhost:8002/predict \
+  --count 100
 ```
 
-You should see increased counters reflecting the load test.
+**What it does:**
+- Sends repeated inference requests
+- Measures request latency
+- Helps validate service behavior under load
 
----
-
-## Understanding the Metrics
-
-### Available Metrics
-
-| Metric | Type | Description |
-|--------|------|-------------|
-| `total_requests` | Counter | Total HTTP requests received |
-| `total_predictions` | Counter | Total prediction requests processed |
-| `avg_latency_ms` | Gauge | Average prediction latency in milliseconds |
-| `uptime_seconds` | Gauge | Application uptime |
-
-### Why These Metrics Matter
-
-**For AI/ML Inference:**
-- **Latency** - Critical for user experience and SLOs
-- **Request Count** - Helps with capacity planning
-- **Prediction Count** - Tracks actual model usage
-- **Uptime** - Monitors service availability
-
-Unlike typical CRUD apps, ML inference services often have:
-- Higher latency variance
-- CPU-intensive workloads
-- Strict SLA requirements
-- Need for detailed performance tracking
-
----
-
-## Running Unit Tests
-
-From the `free/app` directory:
-
+**While running, observe:**
 ```bash
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate
+# In another terminal - watch logs
+kubectl logs -f deploy/ai-lab-2-2
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Run tests
-pytest
-```
-
-Expected output:
-
-```
-================== test session starts ==================
-collected 3 items
-
-tests/test_app.py ...                            [100%]
-
-=================== 3 passed in X.XXs ===================
+# Watch metrics change
+watch -n 1 curl -s http://localhost:8002/metrics-lite
 ```
 
 ---
 
-## Local Development
+## 🧪 Running Tests
 
-Run the FastAPI app locally (without Kubernetes):
+### Application Tests
 
 ```bash
 cd app
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8000
+pytest
 ```
 
-In another terminal:
+**Expected output:**
+```
+====== test session starts ======
+collected X items
 
-```bash
-# Health check
-curl http://localhost:8000/health
+tests/test_app.py ....
+tests/test_load_generator.py ...
 
-# Metrics
-curl http://localhost:8000/metrics-lite
-
-# Prediction
-curl -X POST http://localhost:8000/predict \
-  -H "Content-Type: application/json" \
-  -d '{"features": [1.0, 2.0, 3.5]}'
+====== X passed in X.XXs ======
 ```
 
 ---
 
-## Debugging Common Issues
+## 📈 Understanding the Observability Signals
 
-### No Metrics Data
+### Logs
+- **Show what happened**
+- Useful for debugging inference flow
+- Collected automatically by Kubernetes
+- Critical for root cause analysis
 
-If metrics show all zeros:
-
-1. Make sure you've sent some requests first
-2. Check logs for errors
-3. Verify the app is running
-
-```bash
-kubectl get pods
-kubectl logs deploy/ai-lab-2-2-free
-```
-
-### High Latency
-
-If latency is higher than expected:
-
-1. Check pod resource usage
-2. Look for CPU throttling
-3. Review logs for errors
-
-```bash
-kubectl top pod
-kubectl describe pod <pod-name>
-```
-
-### Load Generator Fails
-
-If the load generator can't connect:
-
-1. Verify port-forward is running
-2. Check the URL is correct
-3. Ensure the pod is healthy
-
-```bash
-kubectl get pods
-kubectl port-forward deploy/ai-lab-2-2-free 8002:8000
-```
+### Metrics
+- **Show how often and how long**
+- Help detect performance degradation
+- Represent the starting point before Prometheus or OpenTelemetry
+- Enable trend analysis over time
 
 ---
 
-## Cost Analysis
-
-### FREE Version Cost: $0
-
-This version runs entirely in KIND and has:
-- No external dependencies
-- No cloud services
-- No data egress costs
-- No storage costs
-
-**Perfect for:**
-- Learning and experimentation
-- Local development
-- CI/CD testing
-- Proof of concepts
-
----
-
-## Cleanup
-
-Remove all FREE lab resources:
+## 🧹 Cleanup
 
 ```bash
 kubectl delete -f k8s/
-```
-
-Delete the kind cluster:
-
-```bash
 kind delete cluster --name mcp-cluster
+docker system prune -f
 ```
 
 ---
 
-## Troubleshooting
+## 💡 Why This Lab Exists in Chapter-2
 
-### Pod Not Starting
+This lab demonstrates the operational reality of AI inference services:
 
-Check pod status and logs:
+| Reality | Implication |
+|---------|-------------|
+| AI workloads are compute-heavy | Need CPU/memory metrics |
+| Latency matters more than throughput alone | Need request-level timing |
+| Logs and metrics must exist before scaling | Observability-first approach |
+| Kubernetes is the control plane for AI operations | Standard tools apply |
+
+---
+
+## 🎯 Key Takeaways
+
+1. **Observability must be built into the application**, not bolted on later
+2. **Logs provide context**, metrics provide trends
+3. **AI inference has predictable costs** that should be observable
+4. **Load testing reveals behavior** that health checks miss
+5. **Simple metrics are better than no metrics**
+
+---
+
+## ➡️ What This Lab Sets Up
+
+This lab sets the foundation for:
+
+- **Advanced observability** (Prometheus, Grafana)
+- **Distributed tracing** (OpenTelemetry, Jaeger)
+- **GPU-level monitoring** (nvidia-smi integration)
+- **Production AI platforms**
+
+---
+
+## 🔧 Troubleshooting
+
+### Port Forward Fails
 
 ```bash
+# Check if service exists
+kubectl get svc ai-lab-2-2
+
+# Check if pod is running
+kubectl get pods -l app=ai-lab-2-2
+
+# Try different local port
+kubectl port-forward deploy/ai-lab-2-2 8003:8000
+```
+
+### Load Generator Connection Refused
+
+```bash
+# Ensure port-forward is running
+kubectl port-forward deploy/ai-lab-2-2 8002:8000
+
+# Test endpoint manually first
+curl http://localhost:8002/health
+```
+
+### No Logs Appearing
+
+```bash
+# Check pod status
 kubectl get pods
-kubectl describe pod <pod-name>
-kubectl logs <pod-name>
+
+# Describe pod for events
+kubectl describe pod -l app=ai-lab-2-2
+
+# Check if container is running
+kubectl get pods -o wide
 ```
 
-Ensure image is loaded:
+### Tests Failing
 
 ```bash
-kind load docker-image ai-lab-2-2-free:v1 --name mcp-cluster
-```
+# Ensure correct Python version
+python3 --version  # Should be 3.11+
 
-### Port-Forward Fails
+# Install dependencies
+pip install -r app/requirements.txt
 
-Verify deployment is running:
-
-```bash
-kubectl get deployments
-kubectl get pods
-```
-
-Try a different local port:
-
-```bash
-kubectl port-forward deploy/ai-lab-2-2-free 8003:8000
-```
-
-### Metrics Endpoint Not Responding
-
-Check if the app started correctly:
-
-```bash
-kubectl logs deploy/ai-lab-2-2-free
-```
-
-Verify the endpoint path:
-
-```bash
-curl http://localhost:8002/metrics-lite  # Correct
-curl http://localhost:8002/metrics       # Wrong
-```
-
-### Load Generator Errors
-
-Ensure dependencies are installed:
-
-```bash
-pip install requests
-```
-
-Check that port-forward is active:
-
-```bash
-# Should show the port-forward process
-ps aux | grep port-forward
+# Run tests with verbose output
+pytest -v
 ```
 
 ---
 
-## Next Steps
+## ✅ Success Criteria
 
-### Explore the PAID Version
+You have successfully completed this lab if:
 
-The PAID version adds:
-
-- **OpenTelemetry Integration** - Industry-standard tracing and metrics
-- **OTLP Pipeline** - Send data to OpenTelemetry Collector
-- **Rich Metrics** - Histogram buckets for latency distribution
-- **Distributed Tracing** - Track requests across services
-- **Production Features** - Namespaces, resource limits, proper observability
-
-### Additional Learning
-
-- Study OpenTelemetry concepts
-- Learn about Prometheus metrics format
-- Explore distributed tracing patterns
-- Understand SLOs and SLIs for ML services
+- ✅ Pod is running and healthy
+- ✅ All three endpoints (`/health`, `/predict`, `/metrics-lite`) work
+- ✅ Logs show inference requests
+- ✅ Load generator completes successfully
+- ✅ You understand why observability matters for AI workloads
 
 ---
 
-## Key Takeaways
+## 📦 Repository Location
 
-✅ **Logs are essential** - Use stdout for easy Kubernetes collection  
-✅ **Basic metrics help** - Even simple counters provide value  
-✅ **Latency matters** - Track and optimize inference latency  
-✅ **Start simple** - Build observability incrementally  
-✅ **Test locally** - KIND provides a great development environment  
+This lab lives here:
+
+👉 [github.com/toktechteam/ai_agents_for_devops/tree/main/lab-02.2-observability](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-02.2-observability)
 
 ---
 
-## Questions or Issues?
+## 📚 eBook Reference
 
-Check the troubleshooting section above or review pod logs:
+This lab is explained in detail in **Chapter 2** of the eBook:
 
-```bash
-kubectl logs <pod-name>
-kubectl describe pod <pod-name>
+👉 **AI Agents for DevOps**  
+[theopskart.gumroad.com/l/AIAgentsforDevOps](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+
+---
+
+## 📝 License
+
+This repository uses a **dual license** structure:
+
+- **📖 Educational Content** (documentation, tutorials, explanations):  
+  Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)  
+  Free for personal learning and non-commercial educational use.
+
+- **💻 Code** (scripts, implementations, configurations):  
+  Licensed under [MIT License](https://opensource.org/licenses/MIT)  
+  Free to use in both personal and commercial projects.
+
+**Attribution:**  
+When sharing or adapting this content, please credit:
+```
+Original content from "AI Agents for DevOps" by TokTechTeam
+https://theopskart.gumroad.com/l/AIAgentsforDevOps
 ```
 
-Happy learning about AI inference observability! 🚀📊
+For full license details and commercial use inquiries, see [LICENSE](../LICENSE).
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! However, please note:
+- This content is tied to a commercial eBook
+- Contributions should align with the educational goals
+- All contributions will be licensed under the same terms
+
+Before contributing:
+1. Read the [LICENSE](../LICENSE) file
+2. Open an issue to discuss your proposed changes
+3. Submit a pull request
+
+---
+
+## 📧 Contact & Support
+
+- **Issues**: [GitHub Issues](https://github.com/toktechteam/ai_agents_for_devops/issues)
+- **eBook**: [AI Agents for DevOps](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+- **Commercial Licensing**: toktechteam@gmail.com/theopskart@gmail.com
+
+---
+
+## ⭐ Acknowledgments
+
+This lab is part of the comprehensive **AI Agents for DevOps** course, designed to teach practical AI implementation in production environments.
+
+If you find this lab helpful, consider:
+- ⭐ Starring this repository
+- 📖 Getting the full eBook for deeper insights
+- 🔄 Sharing with your team
+
+---
+
+Copyright © 2024 TokTechTeam. See [LICENSE](../LICENSE) for details.
