@@ -1,12 +1,13 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, conlist
+from pydantic import BaseModel, Field
+from typing import List
 import time
 
 app = FastAPI(title="AI Lab Free - Simple Inference API")
 
 
 class Features(BaseModel):
-    features: conlist(float, min_items=1)
+    features: List[float] = Field(..., min_length=1)
 
 
 @app.get("/health")
@@ -16,10 +17,10 @@ def health():
 
 @app.post("/predict")
 def predict(payload: Features):
-    # Simulate simple "model": sum of features
     try:
+        # Simulated "model": sum of features
         prediction = float(sum(payload.features))
-    except Exception as exc:  # pragma: no cover - defensive
+    except Exception as exc:  # defensive
         raise HTTPException(status_code=400, detail=str(exc))
 
     # Simulate fixed model latency (e.g., 50ms)
