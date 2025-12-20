@@ -94,7 +94,7 @@ Both expose the same interface so behavior can be compared fairly.
 | `app_ml.py` | Model-loading API implementation |
 | `requirements-traditional.txt` | Dependencies for traditional API (minimal) |
 | `requirements-ml.txt` | Dependencies for ML service (includes model libraries) |
-| `docker_compose.txt` | Runs both services |
+| `docker_compose.yml` | Runs both services |
 | `nginx.conf` | Simple routing configuration |
 | `README.md` | This file (single source of truth) |
 

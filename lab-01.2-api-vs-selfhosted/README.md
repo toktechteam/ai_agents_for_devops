@@ -355,7 +355,7 @@ Before contributing:
 
 - **Issues**: [GitHub Issues](https://github.com/toktechteam/ai_agents_for_devops/issues)
 - **eBook**: [AI Agents for DevOps](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
-- **Commercial Licensing**: [your-contact-email]
+- **Commercial Licensing**: theopskart@gmail.com/toktechteam@gmail.com
 
 ---
 
