@@ -101,7 +101,6 @@ The FastAPI service exposes:
 | `k8s/service.yaml` | Kubernetes service configuration |
 | `kind-mcp-cluster.yaml` | Kind cluster configuration |
 | `commands.md` | Common kubectl/docker commands reference |
-| `setup.md` | Detailed setup and troubleshooting guide |
 | `README.md` | This file (single source of truth) |
 
 ---
