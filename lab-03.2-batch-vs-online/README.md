@@ -1,5 +1,11 @@
-# Lab 3.1 FREE Version – Batch vs Online AI Workloads
-## Batch Inference with Kubernetes Jobs
+# Lab 03.1 — Batch vs Online AI Workloads: Batch Inference with Kubernetes Jobs
+
+[![Lab](https://img.shields.io/badge/Lab-03.1-blue.svg)](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.1-batch-vs-online)
+[![Chapter](https://img.shields.io/badge/Chapter-3-orange.svg)](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+[![Code License: MIT](https://img.shields.io/badge/Code%20License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+This lab is part of **Chapter 3** of the eBook **AI Agents for DevOps**.
 
 ---
 
@@ -30,6 +36,8 @@ By completing this lab, you will understand:
    - Managing scheduled job history
    - Monitoring scheduled executions
 
+---
+
 ### Practical Skills
 
 You will be able to:
@@ -40,6 +48,8 @@ You will be able to:
 - ✅ Monitor and debug batch job executions
 - ✅ Retrieve and analyze batch job outputs from logs
 - ✅ Understand cost implications of batch vs online inference
+
+---
 
 ### Real-World Applications
 
@@ -209,17 +219,23 @@ NAME                      STATUS   ROLES           AGE   VERSION
 mcp-cluster-control-plane Ready    control-plane   30s   v1.30.0
 ```
 
+---
+
 ### Step 3: Build Docker Image
 
 ```bash
 docker build -t ai-lab-3-1-batch:v1 .
 ```
 
+---
+
 ### Step 4: Load Image into kind
 
 ```bash
 kind load docker-image ai-lab-3-1-batch:v1 --name mcp-cluster
 ```
+
+---
 
 ### Step 5: Create Namespace
 
@@ -231,6 +247,8 @@ Verify:
 ```bash
 kubectl get ns ai-ml-lab-3-1
 ```
+
+---
 
 ### Step 6: Run One-Time Batch Job
 
@@ -256,6 +274,8 @@ kubectl logs -n ai-ml-lab-3-1 "$POD_NAME"
 {"id": 2, "prediction": 15.0}
 {"summary": {"records": 2, "avg_prediction": 10.5}}
 ```
+
+---
 
 ### Step 7: Run Scheduled Batch Job (CronJob)
 
@@ -301,6 +321,8 @@ User Request → API (Always Running) → Prediction → User Response
 - Higher resource costs (24/7 running)
 - Use cases: Web apps, mobile apps, real-time systems
 
+---
+
 ### Batch Inference (This Lab)
 
 ```
@@ -317,6 +339,8 @@ Schedule → Job Starts → Process Dataset → Output Results → Job Ends
 - Higher latency acceptable (seconds to hours)
 - Lower resource costs (pay only when running)
 - Use cases: Nightly reports, bulk scoring, data preprocessing
+
+---
 
 ### Cost Comparison
 
@@ -366,6 +390,8 @@ tests/test_batch_job.py .                    [100%]
 
 This lab runs entirely locally with no cloud costs.
 
+---
+
 ### If Deployed to Cloud: <$10/month
 
 **Assumptions:**
@@ -387,6 +413,8 @@ Total: $0.60-1.50/month
 3. Compress output data
 4. Set appropriate job retention policies
 5. Use cheaper storage for input/output data
+
+---
 
 ### Batch vs Online Cost Example
 
@@ -430,25 +458,29 @@ After completing this lab, you understand:
 - Pods remain after job completion for log inspection
 - Job history and cleanup policies
 
+---
+
 ### Technical Skills
 
 You can now:
 
-✅ **Package batch ML code** for Kubernetes
-✅ **Deploy one-time jobs** for data processing
-✅ **Schedule recurring jobs** using CronJobs
-✅ **Monitor job execution** and retrieve outputs
-✅ **Debug failed jobs** using logs and events
+✅ **Package batch ML code** for Kubernetes  
+✅ **Deploy one-time jobs** for data processing  
+✅ **Schedule recurring jobs** using CronJobs  
+✅ **Monitor job execution** and retrieve outputs  
+✅ **Debug failed jobs** using logs and events  
 ✅ **Optimize costs** by choosing appropriate patterns
+
+---
 
 ### Production Patterns
 
 You've learned:
 
-✅ **Job completion criteria** - Exit codes and success conditions
-✅ **Output management** - Using stdout vs persistent storage
-✅ **Schedule syntax** - Cron expressions for job scheduling
-✅ **Resource limits** - Preventing runaway batch jobs
+✅ **Job completion criteria** - Exit codes and success conditions  
+✅ **Output management** - Using stdout vs persistent storage  
+✅ **Schedule syntax** - Cron expressions for job scheduling  
+✅ **Resource limits** - Preventing runaway batch jobs  
 ✅ **History management** - Keeping job history for auditing
 
 ---
@@ -476,6 +508,8 @@ kind load docker-image ai-lab-3-1-batch:v1 --name mcp-cluster
 kubectl top nodes
 ```
 
+---
+
 ### Issue: Pod Status = Error or CrashLoopBackOff
 
 **Check logs:**
@@ -498,6 +532,8 @@ cd app
 python batch_job.py
 ```
 
+---
+
 ### Issue: CronJob Not Creating Jobs
 
 **Check CronJob status:**
@@ -518,6 +554,8 @@ kubectl get cronjob batch-inference-scheduled -n ai-ml-lab-3-1 -o yaml | grep sc
 # Manually trigger a job
 kubectl create job --from=cronjob/batch-inference-scheduled manual-test -n ai-ml-lab-3-1
 ```
+
+---
 
 ### Issue: Can't Find Pod Logs
 
@@ -591,6 +629,8 @@ kind get clusters
 - Insert into database
 - Trigger downstream workflows
 
+---
+
 ### Advanced Topics
 
 **1. Parallel Batch Jobs:**
@@ -608,21 +648,11 @@ kind get clusters
 - Alert on job duration anomalies
 - Create dashboards for batch metrics
 
-### Compare with PAID Version
-
-The PAID version of this lab would include:
-- Output to cloud storage (S3/GCS)
-- Database integration for results
-- Advanced scheduling strategies
-- Job monitoring and alerting
-- Parallel processing capabilities
-- Integration with data pipelines
-
 ---
 
 ## 🎉 Congratulations!
 
-You've successfully completed Lab 3.1 FREE Version!
+You've successfully completed Lab 3.1!
 
 ### What You've Mastered:
 
@@ -644,11 +674,86 @@ You now have the skills to deploy production batch ML workloads!
 
 ---
 
+## 📦 Repository Location
+
+This lab lives here:
+
+👉 [github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.1-batch-vs-online](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.1-batch-vs-online)
+
+---
+
+## 📚 eBook Reference
+
+This lab is explained in detail in **Chapter 3** of the eBook:
+
+👉 **AI Agents for DevOps**  
+[theopskart.gumroad.com/l/AIAgentsforDevOps](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+
+---
+
+## 📝 License
+
+This repository uses a **dual license** structure:
+
+- **📖 Educational Content** (documentation, tutorials, explanations):  
+  Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)  
+  Free for personal learning and non-commercial educational use.
+
+- **💻 Code** (scripts, implementations, configurations):  
+  Licensed under [MIT License](https://opensource.org/licenses/MIT)  
+  Free to use in both personal and commercial projects.
+
+**Attribution:**  
+When sharing or adapting this content, please credit:
+```
+Original content from "AI Agents for DevOps" by TokTechTeam
+https://theopskart.gumroad.com/l/AIAgentsforDevOps
+```
+
+For full license details and commercial use inquiries, see [LICENSE](../LICENSE).
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! However, please note:
+- This content is tied to a commercial eBook
+- Contributions should align with the educational goals
+- All contributions will be licensed under the same terms
+
+Before contributing:
+1. Read the [LICENSE](../LICENSE) file
+2. Open an issue to discuss your proposed changes
+3. Submit a pull request
+
+---
+
+## 📧 Contact & Support
+
+- **Issues**: [GitHub Issues](https://github.com/toktechteam/ai_agents_for_devops/issues)
+- **eBook**: [AI Agents for DevOps](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+- **Commercial Licensing**: toktechteam@gmail.com/theopskart@gmail.com
+
+---
+
+## ⭐ Acknowledgments
+
+This lab is part of the comprehensive **AI Agents for DevOps** course, designed to teach practical AI implementation in production environments.
+
+If you find this lab helpful, consider:
+- ⭐ Starring this repository
+- 📖 Getting the full eBook for deeper insights
+- 🔄 Sharing with your team
+
+---
+
 ## 📖 Additional Resources
 
-- Kubernetes Jobs: https://kubernetes.io/docs/concepts/workloads/controllers/job/
-- Kubernetes CronJobs: https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
-- Cron syntax: https://crontab.guru/
-- Batch inference best practices: Research MLOps batch processing patterns
+- [Kubernetes Jobs Documentation](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
+- [Kubernetes CronJobs Documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
+- [Cron Syntax Reference](https://crontab.guru/)
+- [MLOps Batch Processing Best Practices](https://ml-ops.org/)
 
-Happy learning! 🚀📊
+---
+
+Copyright © 2024 TokTechTeam. See [LICENSE](../LICENSE) for details.
