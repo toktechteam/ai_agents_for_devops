@@ -1,6 +1,6 @@
-# Lab 03.1 — Batch vs Online AI Workloads: Batch Inference with Kubernetes Jobs
+# Lab 03.2 — Batch vs Online AI Workloads: Batch Inference with Kubernetes Jobs
 
-[![Lab](https://img.shields.io/badge/Lab-03.1-blue.svg)](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.1-batch-vs-online)
+[![Lab](https://img.shields.io/badge/Lab-03.2-blue.svg)](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.2-batch-vs-online)
 [![Chapter](https://img.shields.io/badge/Chapter-3-orange.svg)](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Code License: MIT](https://img.shields.io/badge/Code%20License-MIT-green.svg)](https://opensource.org/licenses/MIT)
@@ -678,7 +678,7 @@ You now have the skills to deploy production batch ML workloads!
 
 This lab lives here:
 
-👉 [github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.1-batch-vs-online](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.1-batch-vs-online)
+👉 [github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.2-batch-vs-online](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-03.2-batch-vs-online)
 
 ---
 
