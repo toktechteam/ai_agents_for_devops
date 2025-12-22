@@ -1,5 +1,11 @@
-# Lab 4.1 FREE Version – Your First Infrastructure AI Agent
-## Building an Autonomous Investigation Agent (Simple but Real)
+# Lab 04.1 — Your First Infrastructure AI Agent: Building an Autonomous Investigation Agent
+
+[![Lab](https://img.shields.io/badge/Lab-04.1-blue.svg)](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-04.1-first-ai-agent)
+[![Chapter](https://img.shields.io/badge/Chapter-4-orange.svg)](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+[![Code License: MIT](https://img.shields.io/badge/Code%20License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+This lab is part of **Chapter 4** of the eBook **AI Agents for DevOps**.
 
 ---
 
@@ -30,10 +36,12 @@ By completing this lab, you will understand:
    - **Safe Executor**: Error-handling and sandboxing
 
 4. **Difference from Traditional Automation**:
-   - Traditional: Fixed if-then scripts
-   - Agent: Dynamic reasoning and adaptation
-   - Traditional: Single-step actions
-   - Agent: Multi-step plans with feedback
+   - **Traditional**: Fixed if-then scripts
+   - **Agent**: Dynamic reasoning and adaptation
+   - **Traditional**: Single-step actions
+   - **Agent**: Multi-step plans with feedback
+
+---
 
 ### Practical Skills
 
@@ -47,6 +55,8 @@ You will be able to:
 - ✅ Deploy agents as Kubernetes services
 - ✅ Test agent behavior and tool interactions
 - ✅ Debug agent decision-making flows
+
+---
 
 ### Real-World Applications
 
@@ -118,7 +128,7 @@ curl --version
 │  │         Namespace: ai-ml-lab-4-1                      │  │
 │  │                                                        │  │
 │  │  ┌──────────────────────────────────────────────┐    │  │
-│  │  │  Pod: free-agent-*                           │    │  │
+│  │  │  Pod: agent-*                                │    │  │
 │  │  │  ┌────────────────────────────────────────┐  │    │  │
 │  │  │  │  FastAPI Controller (Port 8000)        │  │    │  │
 │  │  │  │  ┌──────────────────────────────────┐  │  │    │  │
@@ -170,6 +180,8 @@ curl --version
 └─────────────────────────────────────────────────────────────┘
 ```
 
+---
+
 ### Agent Workflow
 
 ```
@@ -210,7 +222,7 @@ curl --version
 ## 📁 Repository Structure
 
 ```
-lab-04.1-first-ai-agent-free/
+lab-04.1-first-ai-agent/
 ├── README.md                   ← This file
 ├── setup.md                    ← Detailed setup guide
 ├── kind-mcp-cluster.yaml       ← Cluster configuration
@@ -242,7 +254,7 @@ lab-04.1-first-ai-agent-free/
 
 **Step 1: Navigate to app directory**
 ```bash
-cd lab-04.1-first-ai-agent-free/app
+cd lab-04.1-first-ai-agent/app
 ```
 
 **Step 2: Create virtual environment**
@@ -268,6 +280,8 @@ INFO:     Started reloader process
 INFO:     Started server process
 INFO:     Application startup complete.
 ```
+
+---
 
 **Step 5: Test with an alert**
 
@@ -332,19 +346,19 @@ curl -X POST http://localhost:8000/alerts \
 
 **Step 1: Create kind cluster**
 ```bash
-cd lab-04.1-first-ai-agent-free
-kind create cluster --config kind-mcp-cluster.yaml
+cd lab-04.1-first-ai-agent
+kind create cluster --config kind-cluster.yaml
 kubectl get nodes
 ```
 
 **Step 2: Build Docker image**
 ```bash
-docker build -t free-agent-lab-4-1:v1 .
+docker build -t agent-lab-4-1:v1 .
 ```
 
 **Step 3: Load image into kind**
 ```bash
-kind load docker-image free-agent-lab-4-1:v1 --name mcp-cluster
+kind load docker-image agent-lab-4-1:v1 --name mcp-cluster
 ```
 
 **Step 4: Deploy to Kubernetes**
@@ -362,7 +376,7 @@ kubectl get svc -n ai-ml-lab-4-1
 
 **Step 6: Port-forward to access**
 ```bash
-kubectl port-forward -n ai-ml-lab-4-1 svc/free-agent-lab-4-1 8000:8000
+kubectl port-forward -n ai-ml-lab-4-1 svc/agent-lab-4-1 8000:8000
 ```
 
 **Step 7: Send alert**
@@ -381,7 +395,7 @@ curl -X POST http://localhost:8000/alerts \
 From the `app/` directory:
 
 ```bash
-cd lab-04.1-first-ai-agent-free/app
+cd lab-04.1-first-ai-agent/app
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -404,6 +418,8 @@ tests/test_memory.py::test_memory_retrieval PASSED     [100%]
 
 =================== 8 passed in 0.45s ===================
 ```
+
+---
 
 ### Test Individual Components
 
@@ -469,6 +485,8 @@ class SimpleAgent:
 - Memory management
 - Report generation
 
+---
+
 ### 2. Tool Registry (tools.py)
 
 Available infrastructure tools:
@@ -502,6 +520,8 @@ class ToolRegistry:
 - Safe to experiment with
 - Easy to understand and modify
 
+---
+
 ### 3. Memory Store (memory.py)
 
 Simple in-process memory:
@@ -533,6 +553,8 @@ class MemoryStore:
 - Track investigation findings
 - Detect recurring patterns
 - Provide context for decisions
+
+---
 
 ### 4. Safe Executor (executor.py)
 
@@ -603,26 +625,30 @@ After completing this lab, you understand:
 - Error handling
 - Idempotency
 
+---
+
 ### Technical Skills
 
 You can now:
 
-✅ **Build AI agents** from scratch
-✅ **Implement planning logic** for multi-step tasks
-✅ **Create tool registries** for extensibility
-✅ **Design memory systems** for context
-✅ **Deploy agents** as Kubernetes services
-✅ **Test agent behavior** systematically
+✅ **Build AI agents** from scratch  
+✅ **Implement planning logic** for multi-step tasks  
+✅ **Create tool registries** for extensibility  
+✅ **Design memory systems** for context  
+✅ **Deploy agents** as Kubernetes services  
+✅ **Test agent behavior** systematically  
 ✅ **Debug agent execution** flows
+
+---
 
 ### Real-World Patterns
 
 You've learned:
 
-✅ **Incident automation** - Automated alert investigation
-✅ **Runbook execution** - Tool orchestration patterns
-✅ **Context retention** - Memory for better decisions
-✅ **Safe execution** - Error handling and timeouts
+✅ **Incident automation** - Automated alert investigation  
+✅ **Runbook execution** - Tool orchestration patterns  
+✅ **Context retention** - Memory for better decisions  
+✅ **Safe execution** - Error handling and timeouts  
 ✅ **Service deployment** - Agent as a microservice
 
 ---
@@ -632,6 +658,8 @@ You've learned:
 ### Running in KIND: $0/month
 
 This lab runs entirely locally with no cloud costs.
+
+---
 
 ### If Deployed to Cloud: <$5/month
 
@@ -667,16 +695,18 @@ Total: $3.50-5.50/month
 
 **Solution:**
 ```bash
-kind load docker-image free-agent-lab-4-1:v1 --name mcp-cluster
-kubectl delete pod -n ai-ml-lab-4-1 -l app=free-agent
+kind load docker-image agent-lab-4-1:v1 --name mcp-cluster
+kubectl delete pod -n ai-ml-lab-4-1 -l app=agent
 ```
+
+---
 
 ### Issue: API Not Reachable
 
 **Check service:**
 ```bash
 kubectl get svc -n ai-ml-lab-4-1
-kubectl describe svc free-agent-lab-4-1 -n ai-ml-lab-4-1
+kubectl describe svc agent-lab-4-1 -n ai-ml-lab-4-1
 ```
 
 **Check port-forward:**
@@ -685,14 +715,16 @@ kubectl describe svc free-agent-lab-4-1 -n ai-ml-lab-4-1
 pkill -f "port-forward"
 
 # Restart
-kubectl port-forward -n ai-ml-lab-4-1 svc/free-agent-lab-4-1 8000:8000
+kubectl port-forward -n ai-ml-lab-4-1 svc/agent-lab-4-1 8000:8000
 ```
+
+---
 
 ### Issue: Tests Failing
 
 **Check working directory:**
 ```bash
-cd lab-04.1-first-ai-agent-free/app
+cd lab-04.1-first-ai-agent/app
 pytest
 ```
 
@@ -703,11 +735,13 @@ pip install -r requirements.txt
 pytest
 ```
 
+---
+
 ### Issue: Agent Returns Errors
 
 **Check logs:**
 ```bash
-kubectl logs -n ai-ml-lab-4-1 -l app=free-agent --tail=50
+kubectl logs -n ai-ml-lab-4-1 -l app=agent --tail=50
 ```
 
 **Test locally:**
@@ -736,7 +770,7 @@ kind delete cluster --name mcp-cluster
 ### Clean Local Environment
 
 ```bash
-cd lab-04.1-first-ai-agent-free/app
+cd lab-04.1-first-ai-agent/app
 deactivate  # Exit virtualenv
 rm -rf .venv
 ```
@@ -782,16 +816,6 @@ def detect_patterns(self):
     # Suggest preventive actions
 ```
 
-### Explore PAID Version
-
-The PAID version adds:
-- **LLM-based planning** (GPT-4, Claude)
-- **Real memory layers** (working, episodic, semantic)
-- **Database integration** (Redis, Postgres, Vector DB)
-- **Tool sandboxing** (isolated execution)
-- **OpenTelemetry** (full observability)
-- **Production features** (auth, rate limiting, monitoring)
-
 ---
 
 ## 🎉 Congratulations!
@@ -817,4 +841,89 @@ These patterns power:
 
 You now have the foundation to build production AI agents!
 
-Happy learning! 🚀🤖🔧
+---
+
+## 📦 Repository Location
+
+This lab lives here:
+
+👉 [github.com/toktechteam/ai_agents_for_devops/tree/main/lab-04.1-first-ai-agent](https://github.com/toktechteam/ai_agents_for_devops/tree/main/lab-04.1-first-ai-agent)
+
+---
+
+## 📚 eBook Reference
+
+This lab is explained in detail in **Chapter 4** of the eBook:
+
+👉 **AI Agents for DevOps**  
+[theopskart.gumroad.com/l/AIAgentsforDevOps](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+
+---
+
+## 📝 License
+
+This repository uses a **dual license** structure:
+
+- **📖 Educational Content** (documentation, tutorials, explanations):  
+  Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)  
+  Free for personal learning and non-commercial educational use.
+
+- **💻 Code** (scripts, implementations, configurations):  
+  Licensed under [MIT License](https://opensource.org/licenses/MIT)  
+  Free to use in both personal and commercial projects.
+
+**Attribution:**  
+When sharing or adapting this content, please credit:
+```
+Original content from "AI Agents for DevOps" by TokTechTeam
+https://theopskart.gumroad.com/l/AIAgentsforDevOps
+```
+
+For full license details and commercial use inquiries, see [LICENSE](../LICENSE).
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! However, please note:
+- This content is tied to a commercial eBook
+- Contributions should align with the educational goals
+- All contributions will be licensed under the same terms
+
+Before contributing:
+1. Read the [LICENSE](../LICENSE) file
+2. Open an issue to discuss your proposed changes
+3. Submit a pull request
+
+---
+
+## 📧 Contact & Support
+
+- **Issues**: [GitHub Issues](https://github.com/toktechteam/ai_agents_for_devops/issues)
+- **eBook**: [AI Agents for DevOps](https://theopskart.gumroad.com/l/AIAgentsforDevOps)
+- **Email**: toktechteam@gmail.com / theopskart@gmail.com
+- **Commercial Licensing**: Contact us via email
+
+---
+
+## ⭐ Acknowledgments
+
+This lab is part of the comprehensive **AI Agents for DevOps** course, designed to teach practical AI implementation in production environments.
+
+If you find this lab helpful, consider:
+- ⭐ Starring this repository
+- 📖 Getting the full eBook for deeper insights
+- 🔄 Sharing with your team
+
+---
+
+## 📖 Additional Resources
+
+- [AI Agents: Theory and Practice](https://arxiv.org/abs/2103.00020)
+- [LangChain Agent Documentation](https://python.langchain.com/docs/modules/agents/)
+- [Kubernetes Operator Pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+
+---
+
+Copyright © 2024 TokTechTeam. See [LICENSE](../LICENSE) for details.
