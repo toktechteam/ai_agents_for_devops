@@ -1,4 +1,4 @@
-# Lab 4.1 FREE Setup Guide – Your First Infrastructure AI Agent
+# Lab 4.1 Setup Guide – Your First Infrastructure AI Agent
 ## Building an Autonomous Investigation Agent from Scratch
 
 ---
