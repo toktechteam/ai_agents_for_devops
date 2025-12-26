@@ -1,21 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: langchain-free
-  namespace: langchain-free
+  name: langchain
+  namespace: langchain
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: langchain-free
+      app: langchain
   template:
     metadata:
       labels:
-        app: langchain-free
+        app: langchain
     spec:
       containers:
-        - name: langchain-free
-          image: langchain-free:v1
+        - name: agent
+          image: langchain-agent:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

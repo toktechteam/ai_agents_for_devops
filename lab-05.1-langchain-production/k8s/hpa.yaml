@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: langchain-free-hpa
-  namespace: langchain-free
+  name: langchain-hpa
+  namespace: langchain
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: langchain-free
+    name: langchain
   minReplicas: 1
   maxReplicas: 5
   metrics:
